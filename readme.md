@@ -143,4 +143,65 @@ PS C:\Users\mvenk>
 
 ```
 
+## Changing the Port Number:
 
+We can change the Port number where API server is running by setting the `PORT` environment variable.
+
+By default server runs on `10000` Port.
+
+```
+PS C:\Users\mvenk\go\src\go-rest-api> 
+PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
+2022/05/07 20:02:39 Simple API Server(1.0) running on 127.0.0.1:10000
+2022/05/07 20:02:44 Entering /quote endpoint, Returning a Random Quote
+2022/05/07 20:02:44 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
+exit status 0xc000013a
+PS C:\Users\mvenk\go\src\go-rest-api> 
+```
+
+Set the `PORT` Environment variable and run the `go run` 
+
+```
+PS C:\Users\mvenk\go\src\go-rest-api> $env:PORT="32000"
+
+PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go 
+2022/05/07 20:03:33 Simple API Server(1.0) running on 127.0.0.1:32000
+2022/05/07 20:03:44 Entering /quote endpoint, Returning a Random Quote
+2022/05/07 20:03:44 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
+2022/05/07 20:03:52 Entering /quote endpoint, Returning a Random Quote
+2022/05/07 20:03:52 If my mind can conceive it, if my heart can believe it, then I can achieve it. - Muhammad Ali
+exit status 0xc000013a
+PS C:\Users\mvenk\go\src\go-rest-api> 
+```
+
+We can see the `PORT` is changed.
+
+> I am using the Windows powershell, So I have used `$env:PORT=32000` to set the environment variable. If you are in Linux set using the `export` command.
+
+
+## Passing your own Quotes(`quotes.json`) file:
+
+You can change the source Quotes fine by setting the `QUOTESFILE` environment variable. Please look at the following example.
+
+```
+PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
+2022/05/07 20:20:42 Simple API Server(1.0) running on 127.0.0.1:10000
+2022/05/07 20:20:52 Entered /quote endpoint, using ./quotes.json as source - Returning a Random Quote
+2022/05/07 20:20:52 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
+2022/05/07 20:20:58 Entered /quote endpoint, using ./quotes.json as source - Returning a Random Quote
+2022/05/07 20:20:58 Any fool can write code that a computer can understand. Good programmers write code that humans can understand. - Martin Fowler
+exit status 0xc000013a
+PS C:\Users\mvenk\go\src\go-rest-api> 
+PS C:\Users\mvenk\go\src\go-rest-api> $env:QUOTESFILE="./test.json"  
+PS C:\Users\mvenk\go\src\go-rest-api> 
+PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
+2022/05/07 20:21:15 Simple API Server(1.0) running on 127.0.0.1:10000
+2022/05/07 20:21:17 Entered /quote endpoint, using ./test.json as source - Returning a Random Quote
+2022/05/07 20:21:17 Believe you can and you're halfway there. - Theodore Roosevelt
+2022/05/07 20:21:24 Entered /quote endpoint, using ./test.json as source - Returning a Random Quote
+2022/05/07 20:21:24 I hated every minute of training, but I said, 'Don't quit. Suffer now and live the rest of your life as a champion. - Muhammad Ali
+exit status 0xc000013a
+PS C:\Users\mvenk\go\src\go-rest-api> 
+```
+
+> Here I have added a `test.json` file on the same folder, So I have used relative Path. Please make sure to specify the correct path for file (or use the Absolute path)

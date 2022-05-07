@@ -76,9 +76,12 @@ func Quote(w http.ResponseWriter, r *http.Request) {
 		/quote endpoint will return random quote.
 	*/
 
-	log.Println("Entering /quote endpoint, Returning a Random Quote")
+	fileName, ok := getEnv("QUOTESFILE")
+	if !ok {
+		fileName = "./quotes.json"
+	}
 
-	fileName := os.Getenv("QUOTESFILE")
+	log.Println("Entered /quote endpoint, using", fileName, "as source - Returning a Random Quote")
 
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -116,12 +119,20 @@ func getJsonQuotes(file io.Reader) (JQuotes, error) {
 	return jsonQuotes, nil
 }
 
+func getEnv(key string) (string, bool) {
+	val, ok := os.LookupEnv(key)
+	if !ok {
+		// 'key' like "PORT" env not set return default value "10000"
+		return "", false
+	} else {
+		return val, true
+	}
+}
+
 func main() {
 
 	// Set the version of the API and Port
 	os.Setenv("VERSION", "1.0")
-	os.Setenv("PORT", "10000")
-	os.Setenv("QUOTESFILE", "./quotes.json")
 
 	router := mux.NewRouter()
 
@@ -132,7 +143,12 @@ func main() {
 	router.HandleFunc("/quote", Quote).Methods("GET")
 	http.Handle("/", router)
 
-	addr := "127.0.0.1:" + os.Getenv("PORT")
+	port, ok := getEnv("PORT")
+	if !ok {
+		port = "10000"
+	}
+
+	addr := "127.0.0.1:" + port
 
 	log.Printf("Simple API Server(%s) running on %s", os.Getenv("VERSION"), addr)
 	srv := &http.Server{
