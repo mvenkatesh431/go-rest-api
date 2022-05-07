@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"strings"
@@ -10,6 +12,15 @@ import (
 
 	"github.com/gorilla/mux"
 )
+
+type JQuotes struct {
+	QList []JQuote `json:"quotes"`
+}
+
+type JQuote struct {
+	Author string `json:"author"`
+	Text   string `json:"text"`
+}
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	/*
@@ -50,14 +61,59 @@ func Env(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Entering /env endpoint, Returning complete Env variables")
 
-	infoResp := make(map[string]string)
+	resp := make(map[string]string)
 
-	infoResp["Version"] = os.Getenv("VERSION")
+	resp["Version"] = os.Getenv("VERSION")
 	// dump the enviroment variables.
 	// os.Environ() returns the slice of strings, So join them using strings.Join to make a string.
-	infoResp["env"] = strings.Join(os.Environ(), ", ")
+	resp["env"] = strings.Join(os.Environ(), ", ")
 
-	json.NewEncoder(w).Encode(infoResp)
+	json.NewEncoder(w).Encode(resp)
+}
+
+func Quote(w http.ResponseWriter, r *http.Request) {
+	/*
+		/quote endpoint will return random quote.
+	*/
+
+	log.Println("Entering /quote endpoint, Returning a Random Quote")
+
+	fileName := os.Getenv("QUOTESFILE")
+
+	file, err := os.Open(fileName)
+	if err != nil {
+		log.Fatalf("Not able to open %s file", fileName)
+	}
+
+	jsonQuotes, err := getJsonQuotes(file)
+	if err != nil {
+		log.Fatalf("Failed to decode the JSON %s", err)
+	}
+
+	// Get a random quote from "jsonQuotes"
+	// Pass the time as the seed for random generator
+	rand.Seed(time.Now().UnixNano())
+	// Generate random index from 0 to lenght of the quote array
+	rNum := rand.Intn(len(jsonQuotes.QList) - 1)
+	rQuote := jsonQuotes.QList[rNum]
+
+	// Prepare and Send the response back
+	resp := make(map[string]string)
+	resp["Version"] = os.Getenv("VERSION")
+	resp["Quote"] = rQuote.Text + " - " + rQuote.Author
+	log.Println(resp["Quote"])
+	json.NewEncoder(w).Encode(resp)
+
+}
+
+// Parse json file and decode into the Story struct
+func getJsonQuotes(file io.Reader) (JQuotes, error) {
+	d := json.NewDecoder(file)
+	var jsonQuotes JQuotes
+	if err := d.Decode(&jsonQuotes); err != nil {
+		return JQuotes{}, err
+	}
+	return jsonQuotes, nil
 }
 
 func main() {
@@ -65,6 +121,7 @@ func main() {
 	// Set the version of the API and Port
 	os.Setenv("VERSION", "1.0")
 	os.Setenv("PORT", "10000")
+	os.Setenv("QUOTESFILE", "./quotes.json")
 
 	router := mux.NewRouter()
 
@@ -72,6 +129,7 @@ func main() {
 	router.HandleFunc("/health-check", HealthCheck).Methods("GET")
 	router.HandleFunc("/info", Info).Methods("GET")
 	router.HandleFunc("/env", Env).Methods("GET")
+	router.HandleFunc("/quote", Quote).Methods("GET")
 	http.Handle("/", router)
 
 	addr := "127.0.0.1:" + os.Getenv("PORT")
