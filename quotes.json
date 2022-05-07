@@ -1,0 +1,44 @@
+{
+    "quotes": [
+        { 
+            "author": "Chris Pine",
+            "text": "Programming isn't about what you know; it's about what you can figure out."
+        },
+        {
+            "author": "Martin Fowler",
+            "text": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand."
+        },
+        {
+            "author": "Dennis Ritchie",
+            "text": "The only way to learn a new programming language is by writing programs in it."
+        },
+        {
+            "author": "John Lennon",
+            "text": "Yeah We alll shine on, Like the Moon, and the Stars, And the SUN."
+        },
+        {
+            "author": "Albert Einstein",
+            "text": "Life is like riding a bicycle. To keep your balance, you must keep moving."
+        },
+        {
+            "author": "Muhammad Ali",
+            "text": "If my mind can conceive it, if my heart can believe it, then I can achieve it."
+        },
+        {
+            "author": "Helen Keller",
+            "text": "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart."
+        },
+        {
+            "author": "Aristotle",
+            "text": "There is no great genius without some touch of madness."
+        },
+        {
+            "author": "Socrates",
+            "text": "The only true wisdom is in knowing you know nothing."
+        },
+        {
+            "author": "Rabindranath Tagore",
+            "text": "Everything comes to us that belongs to us if we create the capacity to receive it."
+        },
+    ]
+}
