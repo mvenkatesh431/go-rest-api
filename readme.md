@@ -17,14 +17,15 @@ Clone the repo and run the `main.go` using the `go run`
 ```
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
 2022/05/07 17:35:37 Simple API Server(1.0) running on 127.0.0.1:10000
-2022/05/07 17:35:52 Entering /info endpoint, returning info
-2022/05/07 17:43:10 Entering /info endpoint, returning info
-2022/05/07 17:47:42 Entering /health-check endpoint
-2022/05/07 17:49:04 Entering /env endpoint, Returning complete Env variables
-2022/05/07 17:49:27 Entering /env endpoint, Returning complete Env variables
-2022/05/07 17:49:56 Entering /health-check endpoint
-2022/05/07 17:54:52 Entering /quote endpoint, Returning a Random Quote
+2022/05/07 17:35:52 Entering /info endpoint, Invoked from 127.0.0.1:56541
+2022/05/07 17:43:10 Entering /info endpoint, Invoked from 127.0.0.1:56541
+2022/05/07 17:47:42 Entering /health-check endpoint, Invoked from 127.0.0.1:56541
+2022/05/07 17:49:04 Entering /env endpoint, Invoked from 127.0.0.1:56541
+2022/05/07 17:49:27 Entering /env endpoint, Invoked from 127.0.0.1:56541
+2022/05/07 17:49:56 Entering /health-check endpoint, Invoked from 127.0.0.1:56541
+2022/05/07 17:54:52 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 17:54:52 Yeah We alll shine on, Like the Moon, and the Stars, And the SUN. - John Lennon
+PS C:\Users\mvenk\go\src\go-rest-api> 
 ....
 ```
 
@@ -153,7 +154,7 @@ By default server runs on `10000` Port.
 PS C:\Users\mvenk\go\src\go-rest-api> 
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
 2022/05/07 20:02:39 Simple API Server(1.0) running on 127.0.0.1:10000
-2022/05/07 20:02:44 Entering /quote endpoint, Returning a Random Quote
+2022/05/07 20:02:44 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:02:44 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
 exit status 0xc000013a
 PS C:\Users\mvenk\go\src\go-rest-api> 
@@ -166,9 +167,9 @@ PS C:\Users\mvenk\go\src\go-rest-api> $env:PORT="32000"
 
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go 
 2022/05/07 20:03:33 Simple API Server(1.0) running on 127.0.0.1:32000
-2022/05/07 20:03:44 Entering /quote endpoint, Returning a Random Quote
+2022/05/07 20:03:44 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:03:44 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
-2022/05/07 20:03:52 Entering /quote endpoint, Returning a Random Quote
+2022/05/07 20:03:52 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:03:52 If my mind can conceive it, if my heart can believe it, then I can achieve it. - Muhammad Ali
 exit status 0xc000013a
 PS C:\Users\mvenk\go\src\go-rest-api> 
@@ -186,9 +187,9 @@ You can change the source Quotes fine by setting the `QUOTESFILE` environment va
 ```
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
 2022/05/07 20:20:42 Simple API Server(1.0) running on 127.0.0.1:10000
-2022/05/07 20:20:52 Entered /quote endpoint, using ./quotes.json as source - Returning a Random Quote
+2022/05/07 20:20:52 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:20:52 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
-2022/05/07 20:20:58 Entered /quote endpoint, using ./quotes.json as source - Returning a Random Quote
+2022/05/07 20:20:58 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:20:58 Any fool can write code that a computer can understand. Good programmers write code that humans can understand. - Martin Fowler
 exit status 0xc000013a
 PS C:\Users\mvenk\go\src\go-rest-api> 
@@ -196,9 +197,9 @@ PS C:\Users\mvenk\go\src\go-rest-api> $env:QUOTESFILE="./test.json"
 PS C:\Users\mvenk\go\src\go-rest-api> 
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
 2022/05/07 20:21:15 Simple API Server(1.0) running on 127.0.0.1:10000
-2022/05/07 20:21:17 Entered /quote endpoint, using ./test.json as source - Returning a Random Quote
+2022/05/07 20:21:17 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:21:17 Believe you can and you're halfway there. - Theodore Roosevelt
-2022/05/07 20:21:24 Entered /quote endpoint, using ./test.json as source - Returning a Random Quote
+2022/05/07 20:21:24 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:21:24 I hated every minute of training, but I said, 'Don't quit. Suffer now and live the rest of your life as a champion. - Muhammad Ali
 exit status 0xc000013a
 PS C:\Users\mvenk\go\src\go-rest-api> 

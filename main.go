@@ -27,7 +27,7 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 		HealthCheck endpoint will return the Health Status.
 		By default, It provides the status as healthy. (If container running properly)
 	*/
-	log.Println("Entering /health-check endpoint")
+	log.Println("Entering /health-check endpoint, Invoked from", r.RemoteAddr)
 	json.NewEncoder(w).Encode(map[string]bool{"healthy": true})
 }
 
@@ -36,7 +36,8 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		/info endpoint will return request info.
 	*/
 
-	log.Println("Entering /info endpoint, returning info")
+	log.Println("Entering /info endpoint, Invoked from", r.RemoteAddr)
+
 	remoteIP := r.RemoteAddr //requesterIP
 	rMethod := r.Method
 	rURI := r.RequestURI
@@ -59,7 +60,7 @@ func Env(w http.ResponseWriter, r *http.Request) {
 		/env endpoint will dump the environment variables.
 	*/
 
-	log.Println("Entering /env endpoint, Returning complete Env variables")
+	log.Println("Entering /env endpoint, Invoked from", r.RemoteAddr)
 
 	resp := make(map[string]string)
 
@@ -81,7 +82,7 @@ func Quote(w http.ResponseWriter, r *http.Request) {
 		fileName = "./quotes.json"
 	}
 
-	log.Println("Entered /quote endpoint, using", fileName, "as source - Returning a Random Quote")
+	log.Println("Entered /quote endpoint, Invoked from", r.RemoteAddr, ", using", fileName, "as QuotesSource")
 
 	file, err := os.Open(fileName)
 	if err != nil {
