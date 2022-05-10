@@ -149,7 +149,8 @@ func main() {
 		port = "10000"
 	}
 
-	addr := "127.0.0.1:" + port
+	// Our service listens on All interfaces of host
+	addr := "0.0.0.0:" + port
 
 	log.Printf("Simple API Server(%s) running on %s", os.Getenv("VERSION"), addr)
 	srv := &http.Server{
