@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -28,7 +29,24 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 		By default, It provides the status as healthy. (If container running properly)
 	*/
 	log.Println("Entering /health-check endpoint, Invoked from", r.RemoteAddr)
-	json.NewEncoder(w).Encode(map[string]bool{"healthy": true})
+
+	// Add delay to /health-check API
+
+	hDelay, ok := getEnv("HEALTHDELAY")
+	if !ok {
+		hDelay = "0"
+	}
+
+	iDelay, err := strconv.Atoi(hDelay)
+
+	if err != nil || iDelay == 0 {
+		json.NewEncoder(w).Encode(map[string]bool{"healthy": true})
+	} else {
+		time.Sleep(time.Duration(iDelay) * time.Second)
+		log.Println("Added", hDelay, "seconds delay, Serving Requst Now")
+		json.NewEncoder(w).Encode(map[string]bool{"healthy": true})
+	}
+
 }
 
 func Info(w http.ResponseWriter, r *http.Request) {

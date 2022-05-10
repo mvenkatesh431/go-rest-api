@@ -5,7 +5,7 @@ This project contains a simple GOLang rest API service. This service is useful t
 We are using the Gorilla Mux and Following routes are implemented
 
 - `/info` - Returns the info about the request.
-- `/health-check` - Returns JSON response as `True` if the service is running fine.
+- `/health-check` - Returns JSON response as `True` if the service is running fine. We can also add custom delay by setting the `HEALTHDELAY` Environment variable.
 - `/env` - Returns present container environment variables in JSON format.
 - `/quote` - Returns a Random Quote from the `quotes.json` file.
 
@@ -16,7 +16,7 @@ Clone the repo and run the `main.go` using the `go run`
 
 ```
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
-2022/05/07 17:35:37 Simple API Server(1.0) running on 127.0.0.1:10000
+2022/05/07 17:35:37 Simple API Server(1.0) running on 0.0.0.0:10000
 2022/05/07 17:35:52 Entering /info endpoint, Invoked from 127.0.0.1:56541
 2022/05/07 17:43:10 Entering /info endpoint, Invoked from 127.0.0.1:56541
 2022/05/07 17:47:42 Entering /health-check endpoint, Invoked from 127.0.0.1:56541
@@ -29,7 +29,7 @@ PS C:\Users\mvenk\go\src\go-rest-api>
 ....
 ```
 
-By default server listens on `10000` Port on `localhost`. Goto the `127.0.0.1:10000/info` from your browser or by using the `curl`.
+By default server listens on `10000` Port on `all Interfaces (0.0.0.0)` of node. Goto the `127.0.0.1:10000/info` from your browser or by using the `curl`.
 
 #### `/info` Endpoint output:
 ```
@@ -46,7 +46,8 @@ Content           : {"Endpoint":"/info","Host":"127.0.0.1:10000","Method":"GET",
 ```
 
 ### `/health-check` endpoint:
-This `/health-check` route, Returns `healthy:true` if server is running fine. So we can see the status of the server by monitoring this route. This can be used with the Kubernetes Readiness and Liveness probes
+This `/health-check` route, Returns `healthy:true` if server is running fine. So we can see the status of the server by monitoring this route. This can be used with the Kubernetes Readiness and Liveness probes.
+We can also add custom delay by setting the `HEALTHDELAY` environment variable.
 
 ```
 PS C:\Users\mvenk> curl 127.0.0.1:10000/health-check
@@ -153,7 +154,7 @@ By default server runs on `10000` Port.
 ```
 PS C:\Users\mvenk\go\src\go-rest-api> 
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
-2022/05/07 20:02:39 Simple API Server(1.0) running on 127.0.0.1:10000
+2022/05/07 20:02:39 Simple API Server(1.0) running on 0.0.0.0:10000
 2022/05/07 20:02:44 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:02:44 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
 exit status 0xc000013a
@@ -166,7 +167,7 @@ Set the `PORT` Environment variable and run the `go run`
 PS C:\Users\mvenk\go\src\go-rest-api> $env:PORT="32000"
 
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go 
-2022/05/07 20:03:33 Simple API Server(1.0) running on 127.0.0.1:32000
+2022/05/07 20:03:33 Simple API Server(1.0) running on 0.0.0.0:32000
 2022/05/07 20:03:44 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:03:44 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
 2022/05/07 20:03:52 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
@@ -179,6 +180,34 @@ We can see the `PORT` is changed.
 
 > I am using the Windows powershell, So I have used `$env:PORT=32000` to set the environment variable. If you are in Linux set using the `export` command.
 
+## Health-check Delayed response:
+
+We can delay the `/health-check` endpoint response by setting the  **`HEALTHDELAY`** Environment variable.
+
+```
+PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go    
+2022/05/11 00:41:26 Simple API Server(1.0) running on 0.0.0.0:10000
+2022/05/11 00:43:29 Entering /health-check endpoint, Invoked from 127.0.0.1:54043
+exit status 0xc000013a
+PS C:\Users\mvenk\go\src\go-rest-api> 
+```
+
+Set the `HEALTHDELAY` env
+```
+PS C:\Users\mvenk\go\src\go-rest-api> $env:HEALTHDELAY="5"
+```
+
+Re-run the app
+```
+PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go    
+2022/05/11 00:43:43 Simple API Server(1.0) running on 0.0.0.0:10000
+2022/05/11 00:43:48 Entering /health-check endpoint, Invoked from 127.0.0.1:54049
+2022/05/11 00:43:53 Added 5 seconds delay, Serving Requst Now
+exit status 0xc000013a
+PS C:\Users\mvenk\go\src\go-rest-api> 
+```
+
+> Note that the response is served after 5 seconds at `00:43:53`
 
 ## Passing your own Quotes(`quotes.json`) file:
 
@@ -186,7 +215,7 @@ You can change the source Quotes fine by setting the `QUOTESFILE` environment va
 
 ```
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
-2022/05/07 20:20:42 Simple API Server(1.0) running on 127.0.0.1:10000
+2022/05/07 20:20:42 Simple API Server(1.0) running on 0.0.0.0:10000
 2022/05/07 20:20:52 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:20:52 Life is like riding a bicycle. To keep your balance, you must keep moving. - Albert Einstein
 2022/05/07 20:20:58 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
@@ -196,7 +225,7 @@ PS C:\Users\mvenk\go\src\go-rest-api>
 PS C:\Users\mvenk\go\src\go-rest-api> $env:QUOTESFILE="./test.json"  
 PS C:\Users\mvenk\go\src\go-rest-api> 
 PS C:\Users\mvenk\go\src\go-rest-api> go run .\main.go
-2022/05/07 20:21:15 Simple API Server(1.0) running on 127.0.0.1:10000
+2022/05/07 20:21:15 Simple API Server(1.0) running on 0.0.0.0:10000
 2022/05/07 20:21:17 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
 2022/05/07 20:21:17 Believe you can and you're halfway there. - Theodore Roosevelt
 2022/05/07 20:21:24 Entering /quote endpoint, Invoked from 127.0.0.1:56541 , using ./quotes.json as QuotesSource
