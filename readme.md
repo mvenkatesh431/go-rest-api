@@ -441,3 +441,6 @@ docker@minikube:~$ curl 172.17.0.3:10000/quote
 docker@minikube:~$
 docker@minikube:~$
 ```
+
+### LICENSE:
+GPL-2.0 license
