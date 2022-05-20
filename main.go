@@ -1,3 +1,8 @@
+////////////////////////////////////////////////////////
+//	Simple Go Rest API Service
+//	author: Venkatesh Macha
+////////////////////////////////////////////////////////
+
 package main
 
 import (
@@ -31,7 +36,6 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	log.Println("Entering /health-check endpoint, Invoked from", r.RemoteAddr)
 
 	// Add delay to /health-check API
-
 	hDelay, ok := getEnv("HEALTHDELAY")
 	if !ok {
 		hDelay = "0"
@@ -151,7 +155,7 @@ func getEnv(key string) (string, bool) {
 func main() {
 
 	// Set the version of the API and Port
-	os.Setenv("VERSION", "1.0")
+	os.Setenv("VERSION", "1.0.0")
 
 	router := mux.NewRouter()
 

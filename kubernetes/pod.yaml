@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: myapi
+  labels:
+    type: myapi
+spec:
+  containers:
+    - name: test-api-server
+      image: mvenkatesh431/k8s-test-container
