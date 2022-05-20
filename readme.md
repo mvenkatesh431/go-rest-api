@@ -38,7 +38,10 @@ PS C:\Users\mvenk\go\src\go-rest-api>
 By default server listens on `10000` Port on `all Interfaces (0.0.0.0)` of node. Goto the `127.0.0.1:10000/info` from your browser or by using the `curl`.
 
 ## Running using the Docker:
+Please look at the [Running on Docker](https://github.com/mvenkatesh431/go-rest-api#running-on-docker) section
 
+## Running using Kubernetes(K8s):
+Please look at the [Running on Kubernetes](https://github.com/mvenkatesh431/go-rest-api#running-on-kubernetes) section
 
 ### `/info` Endpoint output:
 ```
